@@ -19,6 +19,18 @@ In the code, `BSG_CLP` is the name of the executable of the tested algorithm. ``
 from strategy import Strategy
 from T4exps import experiment_execution, best_strategy, terminate, t4e_print
 
+def parameter_tuning(S, param, param_values):
+    initial_value = S.params[param]
+    name = S.name
+    params = S.params.copy()
+    for value in param_values:
+        params[param]=value
+        if initial_value == value: continue
+        else: 
+            S2 = Strategy.create_strategy(name, S.exe, S.params_str, params)
+        S = best_strategy(S, S2)
+    return S
+
 def experiment():
     S = Strategy.create_strategy('BSG_CLP', 'bsg_algo/BSG_CLP', \
         '--alpha={a} --beta={b} --gamma={g} -p {p} -t 1', \
